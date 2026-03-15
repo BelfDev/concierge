@@ -19,20 +19,29 @@ def require_claude_cli():
 
 class TestCoordinatorAgent:
     async def test_returns_a_response(self):
-        result = await run_concierge("Say hello in exactly 3 words.")
+        result, session_id = await run_concierge("Say hello in exactly 3 words.")
         assert isinstance(result, str)
         assert len(result) > 0
+        assert session_id is not None
 
     async def test_uses_time_tool(self):
-        result = await run_concierge(
+        result, _ = await run_concierge(
             "What is the current date? Use your time tool to check."
         )
         assert isinstance(result, str)
         assert len(result) > 0
 
     async def test_spawns_echo_subagent(self):
-        result = await run_concierge(
+        result, _ = await run_concierge(
             "Test the echo subagent by sending it the message 'ping'."
         )
         assert isinstance(result, str)
         assert len(result) > 0
+
+    async def test_session_resumption(self):
+        result1, session_id = await run_concierge("My name is Pedro.")
+        assert session_id is not None
+
+        result2, _ = await run_concierge("What is my name?", session_id=session_id)
+        assert isinstance(result2, str)
+        assert "Pedro" in result2

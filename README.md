@@ -2,7 +2,7 @@
 
 A personal family concierge agent built with [Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk-python).
 
-The concierge can answer questions, use tools (like checking the current time), and delegate tasks to specialized subagents.
+The concierge can answer questions, use tools (like checking the current time), and delegate tasks to specialized subagents. It features an interactive CLI with rich styling, markdown rendering, and multi-turn conversation memory.
 
 ## Prerequisites
 
@@ -21,12 +21,18 @@ make install
 ## Usage
 
 ```bash
-# Ask the concierge anything
-make run PROMPT="What day of the week is it?"
-
-# Or directly
-uv run concierge "Tell me the current time"
+# Start the interactive concierge
+make run
 ```
+
+This launches a conversational session where you can chat with the concierge. It remembers context across turns, so follow-up questions work naturally.
+
+```bash
+# One-shot mode (for scripting)
+make run PROMPT="What day of the week is it?"
+```
+
+> **Note:** Must be run from a regular terminal, not from inside Claude Code (nested sessions are not supported).
 
 ## Development
 
@@ -48,5 +54,6 @@ The concierge uses a coordinator-subagent pattern:
 1. **Coordinator** receives user input and decides how to handle it
 2. **Subagents** handle specialized tasks (spawned on demand)
 3. **Custom MCP tools** provide capabilities like checking the current time
+4. **Session memory** maintains conversation context across turns via Agent SDK session resumption
 
-Built with `claude-agent-sdk` using `query()` for the agentic loop and `AgentDefinition` for subagents.
+Built with `claude-agent-sdk` using `query()` for the agentic loop, `AgentDefinition` for subagents, and `rich` for the interactive CLI.

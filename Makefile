@@ -1,4 +1,4 @@
-.PHONY: install test test-unit test-integration lint run clean
+.PHONY: install test test-all test-integration run clean help
 
 install: ## Install all dependencies
 	uv sync
@@ -12,8 +12,12 @@ test-all: ## Run all tests (unit + integration)
 test-integration: ## Run integration tests only (slow, requires Claude Code CLI)
 	uv run pytest -m integration -v
 
-run: ## Run the concierge (usage: make run PROMPT="your question")
+run: ## Run the concierge (interactive, or one-shot with PROMPT="...")
+ifdef PROMPT
 	uv run concierge "$(PROMPT)"
+else
+	uv run concierge
+endif
 
 clean: ## Remove build artifacts and caches
 	rm -rf .pytest_cache .venv dist build

@@ -4,20 +4,18 @@ import sys
 from claude_agent_sdk import CLINotFoundError, CLIConnectionError
 
 from concierge.agent import run_concierge
+from concierge.cli import run_interactive
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: concierge <prompt>", file=sys.stderr)
-        print('  Example: concierge "What day is it today?"', file=sys.stderr)
-        sys.exit(1)
-
-    prompt = " ".join(sys.argv[1:])
-
     try:
-        result = asyncio.run(run_concierge(prompt))
-        if result:
-            print(result)
+        if len(sys.argv) > 1:
+            prompt = " ".join(sys.argv[1:])
+            result, _ = asyncio.run(run_concierge(prompt))
+            if result:
+                print(result)
+        else:
+            asyncio.run(run_interactive())
     except CLINotFoundError:
         print(
             "Error: Claude Code CLI not found.\n"
