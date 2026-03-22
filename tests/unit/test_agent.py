@@ -111,6 +111,37 @@ class TestRunConcierge:
 
         assert captured_options["opts"].include_partial_messages is True
 
+    async def test_registers_restaurant_subagents(self):
+        """New session should register all three restaurant subagents."""
+        captured_options = {}
+
+        async def query(*, prompt, options):
+            captured_options["opts"] = options
+            yield _init_message()
+            yield _result_message("ok")
+
+        with patch("concierge.agent.claude.query", side_effect=query):
+            await run_concierge("hi")
+
+        agents = captured_options["opts"].agents
+        assert "review_scout" in agents
+        assert "local_guide" in agents
+        assert "vibe_matcher" in agents
+
+    async def test_max_turns_sufficient_for_restaurant_flow(self):
+        """max_turns should be high enough for 3 subagent invocations + clarification."""
+        captured_options = {}
+
+        async def query(*, prompt, options):
+            captured_options["opts"] = options
+            yield _init_message()
+            yield _result_message("ok")
+
+        with patch("concierge.agent.claude.query", side_effect=query):
+            await run_concierge("hi")
+
+        assert captured_options["opts"].max_turns >= 15
+
     async def test_resumed_session_sets_include_partial_messages(self):
         """Resumed session should also set include_partial_messages=True."""
         captured_options = {}

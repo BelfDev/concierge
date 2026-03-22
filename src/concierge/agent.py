@@ -11,6 +11,7 @@ from claude_agent_sdk import (
 from claude_agent_sdk.types import StreamEvent
 
 from concierge.agents.echo import echo_agent
+from concierge.agents.restaurant import local_guide, review_scout, vibe_matcher
 from concierge.prompts import COORDINATOR_PROMPT
 from concierge.tools.time_tool import create_time_server
 
@@ -27,10 +28,15 @@ async def stream_concierge(
         time_server = create_time_server()
         options = ClaudeAgentOptions(
             allowed_tools=["Agent", "WebSearch", "WebFetch"],
-            agents={"echo": echo_agent},
+            agents={
+                "echo": echo_agent,
+                "review_scout": review_scout,
+                "local_guide": local_guide,
+                "vibe_matcher": vibe_matcher,
+            },
             mcp_servers={"time": time_server},
             system_prompt=COORDINATOR_PROMPT,
-            max_turns=10,
+            max_turns=20,
             include_partial_messages=True,
         )
     else:
