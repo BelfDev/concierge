@@ -72,6 +72,7 @@ uv run pytest -m integration
 - New subagents go in `src/concierge/agents/` as modules exporting an AgentDefinition
 - New custom tools go in `src/concierge/tools/` using the @tool decorator
 - Integration tests are marked with `@pytest.mark.integration`
+- **SDK import convention**: use `import claude_agent_sdk as claude` for functions (`claude.query`, `@claude.tool`, `claude.create_sdk_mcp_server`); use direct imports (`from claude_agent_sdk import ...`) for classes and exceptions (`ClaudeAgentOptions`, `AgentDefinition`, `CLINotFoundError`, etc.). This makes SDK function calls visually distinct from regular Python code.
 
 ## Architecture
 

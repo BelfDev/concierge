@@ -1,10 +1,10 @@
 import json
 from datetime import datetime
 
-from claude_agent_sdk import tool, create_sdk_mcp_server
+import claude_agent_sdk as claude
 
 
-@tool("get_current_time", "Get the current date, time, day of the week, and timezone", {})
+@claude.tool("get_current_time", "Get the current date, time, day of the week, and timezone", {})
 async def get_current_time(args: dict) -> dict:
     now = datetime.now().astimezone()
     result = json.dumps({
@@ -18,4 +18,4 @@ async def get_current_time(args: dict) -> dict:
 
 def create_time_server():
     """Create an MCP server exposing the time tool."""
-    return create_sdk_mcp_server("time-tools", tools=[get_current_time])
+    return claude.create_sdk_mcp_server("time-tools", tools=[get_current_time])
