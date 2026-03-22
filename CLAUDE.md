@@ -80,19 +80,6 @@ uv run pytest -m integration
 - Uses streaming iteration over `query()` messages (SystemMessage, AssistantMessage, ResultMessage)
 - Session continuity via `session_id` (captured from init, passed back on resume)
 
-## Keeping This File Current
-
-This CLAUDE.md is a living document. Update it when:
-
-- **New dependencies** are added to `pyproject.toml` — add them to Tech Stack
-- **New subagents** are created in `src/concierge/agents/` — add to Project Structure
-- **New tools** are created in `src/concierge/tools/` — add to Project Structure
-- **New Makefile targets** are added — add to Makefile Targets
-- **New conventions** emerge (naming patterns, test strategies, error handling) — add to Conventions
-- **Architecture changes** (new entry points, message types, config patterns) — update Architecture
-
-Do not duplicate what's already obvious from the code. Focus on intent, conventions, and "why" decisions that a future session wouldn't be able to infer from reading the source alone.
-
 ## Gotchas & Corrections
 
 Common mistakes Claude Code makes in this project. Add new entries as they're discovered.
@@ -105,6 +92,27 @@ Common mistakes Claude Code makes in this project. Add new entries as they're di
 - **`AgentDefinition` is declarative.** Subagents are defined as `AgentDefinition(...)` instances, not classes that extend a base. They declare `description`, `prompt`, and `tools`.
 - **`uv run`, not raw `python`.** Always prefix commands with `uv run` to ensure the virtual environment and dependencies are available.
 - **This is NOT a Vercel/Next.js/TypeScript project.** Ignore suggestions about Vercel deployment, AI Gateway, Next.js patterns, or npm/pnpm. This is a pure Python CLI agent.
+
+## Summarization Instructions
+
+When summarizing this conversation, always preserve:
+- The current task objective and acceptance criteria
+- File paths that have been read or modified
+- Test results and error messages
+- Decisions made and the reasoning behind them
+
+## Keeping This File Current
+
+This CLAUDE.md is a living document. Update it when:
+
+- **New dependencies** are added to `pyproject.toml` — add them to Tech Stack
+- **New subagents** are created in `src/concierge/agents/` — add to Project Structure
+- **New tools** are created in `src/concierge/tools/` — add to Project Structure
+- **New Makefile targets** are added — add to Makefile Targets
+- **New conventions** emerge (naming patterns, test strategies, error handling) — add to Conventions
+- **Architecture changes** (new entry points, message types, config patterns) — update Architecture
+
+Do not duplicate what's already obvious from the code. Focus on intent, conventions, and "why" decisions that a future session wouldn't be able to infer from reading the source alone.
 
 ## References
 
